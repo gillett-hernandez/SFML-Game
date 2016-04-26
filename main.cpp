@@ -18,7 +18,7 @@ int main(int argc, char const *argv[]) {
         return EXIT_FAILURE;
     }
     sf::Sprite sprite(texture);
-    Player* player = new Player(50, 50, &sprite);
+    Player* player = new Player(100, 100, sprite);
 
     sf::Music music;
     if (!music.openFromFile("./resources/flowey.ogg")) {
@@ -56,7 +56,7 @@ int main(int argc, char const *argv[]) {
 
         window.clear();
         window.draw(shape);
-        window.draw(*(player->sprite));
+        window.draw(player->sprite);
         window.display();
     }
 
