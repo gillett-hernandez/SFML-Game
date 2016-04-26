@@ -26,3 +26,10 @@
 *.exe
 *.out
 *.app
+
+# sublime
+*.sublime-workspace
+*.sublime-project
+
+# um
+resources/**

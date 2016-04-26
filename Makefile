@@ -1,17 +1,15 @@
 CC=g++
-CFLAGS=-Wall -lsfml-system -lsfml-window -lsfml-graphics
+CFLAGS=-Wall -lsfml-system -lsfml-window -lsfml-graphics -lsfml-audio
 
 all: main
 	./main
 
-main: main.o component.o# whatever else
-	$(CC) main.o component.o $(CFLAGS) -o main
+main: player.o main.cpp# whatever else
+	$(CC) player.o main.cpp $(CFLAGS) -o main
 
-main.o: main.cpp
-	$(CC) -c main.cpp $(CFLAGS)
-
-component.o: component.cpp
-	$(CC) -c component.cpp $(CFLAGS)
+player.o:
+	$(CC) -c player.cpp $(CFLAGS)
 
 clean:
 	rm *.o
+	rm main
