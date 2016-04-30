@@ -9,8 +9,8 @@ int main(int argc, char const *argv[]) {
     // why?
     //
     sf::RenderWindow window(sf::VideoMode(800, 600), "SFML works!", sf::Style::Titlebar | sf::Style::Close);
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    // sf::CircleShape shape(100.f);
+    // shape.setFillColor(sf::Color::Green);
 
     // Load a sprite to display
     sf::Texture texture;
@@ -28,8 +28,9 @@ int main(int argc, char const *argv[]) {
     music.play();
     
     sf::Clock clock;
+    sf::Time frameTime = sf::milliseconds(16);
     while (window.isOpen()) {
-        sf::Time elapsed = clock.restart();
+        clock.restart();
 
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -38,15 +39,18 @@ int main(int argc, char const *argv[]) {
                     window.close();
                     break;
                 case sf::Event::KeyPressed:
-                    if (event.key.code == sf::Keyboard::Q) {
-                        window.close();
-                    }
-                    if (event.key.code == sf::Keyboard::Escape) {
-                        std::cout << "the escape key was pressed" << std::endl;
-                        std::cout << "control:" << event.key.control << std::endl;
-                        std::cout << "alt:" << event.key.alt << std::endl;
-                        std::cout << "shift:" << event.key.shift << std::endl;
-                        std::cout << "system:" << event.key.system << std::endl;
+                    switch(event.key.code) {
+                        case sf::Keyboard::Escape:
+                            std::cout << "the escape key was pressed" << std::endl;
+                            std::cout << "control:" << event.key.control << std::endl;
+                            std::cout << "alt:" << event.key.alt << std::endl;
+                            std::cout << "shift:" << event.key.shift << std::endl;
+                            std::cout << "system:" << event.key.system << std::endl;
+                        case sf::Keyboard::Q:
+                            window.close();
+                            break;
+                        default:
+                            break;
                     }
                     break;
                 default:
@@ -54,10 +58,36 @@ int main(int argc, char const *argv[]) {
             }
         }
 
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){// || sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+            std::cout << "the W or Up key was pressed" << std::endl;
+            player->pos[1] -= 5;
+            player->updateSprite();
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)){// || sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+            std::cout << "the A or Left key was pressed" << std::endl;
+            player->pos[0] -= 5;
+            player->updateSprite();
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)){// || sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+            std::cout << "the S or Down key was pressed" << std::endl;
+            player->pos[1] += 5;
+            player->updateSprite();
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){// || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+            std::cout << "the D or Right key was pressed" << std::endl;
+            player->pos[0] += 5;
+            player->updateSprite();
+        }
+
         window.clear();
-        window.draw(shape);
+        // window.draw(shape);
         window.draw(player->sprite);
         window.display();
+        auto elapsed = clock.getElapsedTime();
+        if (elapsed < frameTime) {
+            std::cout << "elapsed time this frame " << elapsed.asMilliseconds() << std::endl;
+            sf::sleep(frameTime - elapsed);
+        }
     }
 
     return 0;
